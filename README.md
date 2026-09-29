@@ -1,21 +1,25 @@
-# Subtracker
-
+Subtracker
 Навчальний проєкт на Django (відстежувач платних підписок).
 
-## Інструкція з запуску:
+Інструкція з запуску:
+Клонувати репозиторій:
+git clone https://github.com/Xirobrat/subtracker.git
+cd subtracker
 
-1. Клонувати репозиторій:
-   git clone https://github.com/Xirobrat/subtracker.git
-   cd subtracker
+Створити та активувати віртуальне оточення:
+python -m venv venv
 
-2. Створити та активувати віртуальне оточення:
-   python -m venv venv
-   # На Windows:
-   venv\Scripts\activate
+На Windows:
+venv\Scripts\activate
 
-3. Встановити залежності:
-   pip install -r requirements.txt
+На Linux / macOS:
+source venv/bin/activate
 
-4. Застосувати міграції та запустити сервер:
-   python manage.py migrate
-   python manage.py runserver
+Встановити залежності:
+pip install -r requirements.txt
+
+Застосувати міграції:
+python manage.py migrate
+
+Запустити сервер:
+python manage.py runserver
