@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="card">
+        <h2>Удалить аккаунт?</h2>
+        <p style="color: var(--text-muted);">Это действие необратимо. Будут удалены ваш аккаунт и все ваши подписки.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да, удалить аккаунт</button>
+            <a class="btn btn-secondary" href="{% url 'sub_list' %}">Отмена</a>
+        </form>
+    </div>
+{% endblock %}

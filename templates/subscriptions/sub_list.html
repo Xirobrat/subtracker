@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="total">Итого в месяц (активные): <b>{{ total_cost }} ₴</b></div>
+
+    {% if category_totals %}
+        <div class="card breakdown">
+            {% for cat, amount in category_totals.items %}
+                <span class="breakdown-item">{{ cat }}: <b>{{ amount }} ₴</b></span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="filters">
+        <form method="GET" style="display: contents;">
+            <input type="text" name="q" placeholder="Поиск по названию..." value="{{ current_query }}">
+
+            <select name="category">
+                <option value="">Все категории</option>
+                {% for value, label in categories %}
+                    <option value="{{ value }}" {% if current_category == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="sort">
+                <option value="urgent" {% if current_sort == 'urgent' %}selected{% endif %}>Сначала горящие</option>
+                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цена ↑</option>
+                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цена ↓</option>
+            </select>
+
+            <button type="submit" class="btn btn-secondary">Применить</button>
+        </form>
+    </div>
+
+    <a class="add-btn" href="{% url 'sub_create' %}">+ Добавить</a>
+
+    {% if subs %}
+        <div style="margin-top: 20px;">
+        {% for sub in subs %}
+            <div class="sub-item">
+                <div class="sub-info">
+                    <b>{{ sub.category_icon }} {{ sub.title }}</b>
+                    {% if not sub.is_active %}<span class="sub-meta">(неактивна)</span>{% endif %}
+                    <div class="sub-meta">
+                        {{ sub.get_category_display }} · {{ sub.price }} ₴/мес · списание {{ sub.billing_date|date:"d.m.Y" }}
+                        {% if sub.days_left < 0 %}
+                            <span class="status status-overdue">Просрочено</span>
+                        {% elif sub.days_left <= 3 %}
+                            <span class="status status-soon">Осталось {{ sub.days_left }} дн.</span>
+                        {% else %}
+                            <span class="status status-ok">ОК, {{ sub.days_left }} дн.</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="actions">
+                    <form method="post" action="{% url 'sub_pay' sub.pk %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="pay-link">Оплачено</button>
+                    </form>
+                    <a href="{% url 'sub_edit' sub.pk %}">Редактировать</a>
+                    <a href="{% url 'sub_delete' sub.pk %}" class="danger-link">Удалить</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty">Ничего не найдено.</p>
+    {% endif %}
+
+{% endblock %}

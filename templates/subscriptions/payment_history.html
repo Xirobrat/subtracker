@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="card">
+        <h2>История платежей</h2>
+        <p>Всего оплачено: <b>{{ total_paid }} ₴</b></p>
+
+        {% if payments %}
+            <table class="payments-table">
+                <tr>
+                    <th>Подписка</th>
+                    <th>Сумма</th>
+                    <th>Дата</th>
+                    <th></th>
+                </tr>
+                {% for p in payments %}
+                <tr>
+                    <td>{{ p.subscription.title }}</td>
+                    <td>{{ p.amount }} ₴</td>
+                    <td>{{ p.paid_date|date:"d.m.Y" }}</td>
+                    <td><a href="{% url 'payment_delete' p.pk %}" class="danger-link">Удалить</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p class="empty">Платежей пока нет - отмечайте подписки как «Оплачено» на главной странице.</p>
+        {% endif %}
+
+        <p style="margin-top: 20px;"><a href="{% url 'sub_list' %}">&larr; Назад к подпискам</a></p>
+    </div>
+{% endblock %}
