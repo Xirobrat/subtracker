@@ -1,7 +1,5 @@
-Subtracker
-Навчальний проєкт на Django (відстежувач платних підписок).
-
 Інструкція з запуску:
+
 Клонувати репозиторій:
 git clone https://github.com/Xirobrat/subtracker.git
 cd subtracker
